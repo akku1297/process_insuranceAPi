@@ -1,0 +1,27 @@
+http:
+ port: "8081"
+sales:
+ username: "aakansha.purohit@apisero.com"
+ password: "Apiseroap@876"
+ security_token: "mjgizUtbA5x37CR7fah2GDg3"
+salesforce:
+ host: "system-api-usecase.us-e2.cloudhub.io"
+ port: "80"
+ protocol: "HTTP"
+postgre:
+ host: "sys-api-proxy-postgres.us-e2.cloudhub.io"
+ port: "80"
+ protocol: "HTTP"
+postgre_insurance:
+ host: "sys-api-proxy-ins.us-e2.cloudhub.io"
+ port: "80"
+ protocol: "HTTP"
+user_salesforce:
+ client_id: "30a9254f6534477fbea8fb381e1758e8"
+ client_secret: "13b5a583403e4385bE09337cc1D31083"
+user_postgre:
+ client_id: "42fb1b5e170143bb9473e39ab8008bfa"
+ client_secret: "AA13385B60CA482392D6Cb7981A87855"
+user_insurance:
+ client_id: "b062ae643bd74bb08f9c52c9869d737a"
+ client_secret: "f396D4b3e3a84f008313fFFd68cE5964"

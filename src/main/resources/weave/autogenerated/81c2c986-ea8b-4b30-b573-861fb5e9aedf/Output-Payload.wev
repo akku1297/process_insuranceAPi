@@ -1,0 +1,13 @@
+%dw 2.0
+
+type auto_81c2c986_ea8b_4b30_b573_861fb5e9aedf_Output_Payload = {
+  coverage: String, 
+  policyid: String, 
+  insurer: String, 
+  policytype: String, 
+  yearlypremuim: String, 
+  policyname: String, 
+  monthlypremuim: String, 
+  _?: Any
+}
+

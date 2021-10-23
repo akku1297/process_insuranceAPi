@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:system-a-pi-insurance="http://www.mulesoft.org/schema/mule/system-a-pi-insurance"
+	xmlns:system-api-postgres="http://www.mulesoft.org/schema/mule/system-api-postgres" xmlns:system-a-pi-salesforce="http://www.mulesoft.org/schema/mule/system-a-pi-salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/system-a-pi-salesforce http://www.mulesoft.org/schema/mule/system-a-pi-salesforce/current/mule-system-a-pi-salesforce.xsd
+http://www.mulesoft.org/schema/mule/system-api-postgres http://www.mulesoft.org/schema/mule/system-api-postgres/current/mule-system-api-postgres.xsd
+http://www.mulesoft.org/schema/mule/system-a-pi-insurance http://www.mulesoft.org/schema/mule/system-a-pi-insurance/current/mule-system-a-pi-insurance.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<flow name="getUserDetails" doc:id="2eafc6c1-4a7f-45e4-a944-a89305b77cff" >
+		<choice doc:name="Choice" doc:id="7dad2381-e148-4064-a3f2-854ac059b6cb" >
+			<when expression='#[attributes.uriParams.source == "salesforce"]'>
+				<system-a-pi-salesforce:get-get-users doc:name="Get get users" doc:id="2bdc2e85-8c35-401a-91a2-7ad5fcd7c8d4" config-ref="SystemAPi_Salesforce_Config" account-id="#[attributes.queryParams.accountId]" client-id="${user_salesforce.client_id}" client-secret="${user_salesforce.client_secret}"/>
+			</when>
+			<otherwise >
+				<system-api-postgres:get-customers doc:name="Get customers" doc:id="c5529ee3-b086-4718-b00b-ea0d1494935c" config-ref="SystemAPI_Postgres_Config" cust-id="#[attributes.queryParams.accountId]" client-id="${user_postgre.client_id}" client-secret="${user_postgre.client_secret}"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="654dfc00-5b59-4303-aee5-2e10b34dde5b" message="#[payload]"/>
+	</flow>
+	<flow name="getInsuranceQuotes" doc:id="81c2c986-ea8b-4b30-b573-861fb5e9aedf" >
+		<set-variable value="#[attributes.queryParams.insuranceType]" doc:name="Insurance Type" doc:id="058989a2-a910-45a2-ba12-a09edf7226b0" variableName="insuranceType"/>
+		<choice doc:name="Choice" doc:id="1bf32382-c5b9-4a8d-a019-e7f92991a0d8" >
+			<when expression='#[attributes.uriParams.source == "salesforce"]' >
+				<system-a-pi-salesforce:get-get-users doc:name="Get get users" doc:id="d00bc527-0e62-4ca0-bd49-b7ad0dbc9021" config-ref="SystemAPi_Salesforce_Config" account-id="#[attributes.uriParams.accountId]" client-id="${user_salesforce.client_id}" client-secret="${user_salesforce.client_secret}" />
+			</when>
+			<otherwise >
+				<system-api-postgres:get-customers doc:name="Get customers" doc:id="23e7072b-0127-4de5-b6bc-cf5a5d520eb7" config-ref="SystemAPI_Postgres_Config" cust-id="#[attributes.uriParams.accountId]" client-id="${user_postgre.client_id}" client-secret="${user_postgre.client_secret}" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="e2ea9b34-b18f-4a26-8220-0dfd57dee40b" message='#["Insurance Type : " ++ vars.insuranceType]'/>
+		<system-a-pi-insurance:get-getquotes doc:name="Get getquotes" doc:id="d309284a-9709-42c9-8339-fe275b4d86e4" config-ref="SystemAPi_Insurance_Config" insurance-type="#[vars.insuranceType]" client-id="${user_insurance.client_id}" client-secret="${user_insurance.client_secret}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="cf9ffa4d-c572-4340-9a7a-24b19a07ecf2" message='#[payload]'/>
+	</flow>
+	<flow name="createNewUser" doc:id="e226b6a4-32a2-4a87-85c3-1a2aeb488efd" >
+		<choice doc:name="Choice" doc:id="c74132d6-a51d-44b7-8157-06441d5fdbae" >
+			<when expression='#[attributes.uriParams.source == "salesforce"]' >
+				<system-a-pi-salesforce:create-add-user doc:name="Create add user" doc:id="f71930ed-ba61-4ed5-a29d-ed837a9cecc8" config-ref="SystemAPi_Salesforce_Config" client-id="${user_salesforce.client_id}" client-secret="${user_salesforce.client_secret}"/>
+			</when>
+			<otherwise>
+				<system-api-postgres:create-customer doc:name="Create customer" doc:id="793985a1-cbf1-4574-aea8-193c1dde01da" config-ref="SystemAPI_Postgres_Config" client-id="${user_postgre.client_id}" client-secret="${user_postgre.client_secret}"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="2603de5d-40c4-4ea9-8c8b-a2a954c85465" message="#[payload]"/>
+	</flow>
+	<flow name="updateUser" doc:id="2b6c7436-723d-44ba-a0b2-5afc1aa04e05" >
+		<choice doc:name="Choice" doc:id="09e28b42-ed62-41d7-9482-fa0445a815af" >
+			<when expression='#[attributes.uriParams.source == "salesforce"]' >
+				<system-a-pi-salesforce:update-update-users doc:name="Update update users" doc:id="2b77ca80-4208-4582-bc69-53f610fcec0f" config-ref="SystemAPi_Salesforce_Config"/>
+			</when>
+			<otherwise>
+				<system-api-postgres:update-customers doc:name="Update customers" doc:id="63f323f5-2ac2-4fab-8769-6e63bcb1f587" config-ref="SystemAPI_Postgres_Config" client-id="${user_postgre.client_id}" client-secret="${user_postgre.client_secret}"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="fe58b63c-4e5e-4b11-a845-0e6b0844fed1" message="#[payload]"/>
+	</flow>
+</mule>

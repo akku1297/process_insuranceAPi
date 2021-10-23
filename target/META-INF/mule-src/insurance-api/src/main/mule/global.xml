@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:system-a-pi-insurance="http://www.mulesoft.org/schema/mule/system-a-pi-insurance"
+	xmlns:system-a-pi-salesforce="http://www.mulesoft.org/schema/mule/system-a-pi-salesforce"
+	xmlns:system-api-postgres="http://www.mulesoft.org/schema/mule/system-api-postgres" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/system-api-postgres http://www.mulesoft.org/schema/mule/system-api-postgres/current/mule-system-api-postgres.xsd
+http://www.mulesoft.org/schema/mule/system-a-pi-salesforce http://www.mulesoft.org/schema/mule/system-a-pi-salesforce/current/mule-system-a-pi-salesforce.xsd
+http://www.mulesoft.org/schema/mule/system-a-pi-insurance http://www.mulesoft.org/schema/mule/system-a-pi-insurance/current/mule-system-a-pi-insurance.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="199023bc-998b-49b7-8307-c88179bf7981" file="config.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="57823c96-c5f6-4a96-b9a8-9be8d5330088" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<system-api-postgres:config name="SystemAPI_Postgres_Config" doc:name="SystemAPI_Postgres Config" doc:id="f749ad67-c1d6-48d8-81f6-1d4169fc394f" property_host="${postgre.host}" property_port="${postgre.port}" property_protocol="${postgre.protocol}" />
+	<system-a-pi-salesforce:config name="SystemAPi_Salesforce_Config" doc:name="SystemAPi_Salesforce Config" doc:id="cfe06e1a-072c-48b9-81da-efdba2ebe020" property_host="${salesforce.host}" property_port="${salesforce.port}" property_protocol="${salesforce.protocol}" />
+	<system-a-pi-insurance:config name="SystemAPi_Insurance_Config" doc:name="SystemAPi_Insurance Config" doc:id="3d51ec1f-882a-42fc-9ce8-693bba1f26a8" property_host="${postgre_insurance.host}" property_port="${postgre_insurance.port}" property_protocol="${postgre_insurance.protocol}" />
+</mule>

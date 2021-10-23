@@ -1,0 +1,11 @@
+%dw 2.0
+
+type auto_2eafc6c1_4a7f_45e4_a944_a89305b77cff_Output_Payload = {
+  accountId: String, 
+  firstname: String, 
+  phone: String, 
+  email: String, 
+  lastname: String, 
+  _?: Any
+}
+
