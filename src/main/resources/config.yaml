@@ -5,7 +5,7 @@ sales:
  password: "Apiseroap@876"
  security_token: "mjgizUtbA5x37CR7fah2GDg3"
 salesforce:
- host: "system-api-usecase.us-e2.cloudhub.io"
+ host: "salesforceapi-1.us-e2.cloudhub.io"
  port: "80"
  protocol: "HTTP"
 postgre:
